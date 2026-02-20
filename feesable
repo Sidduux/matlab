@@ -1,0 +1,36 @@
+clc;
+clear;
+
+% Coefficient matrix
+A = [1 1 1 0;
+     1 3 0 1];
+
+b = [4; 6];
+
+% Variable names
+vars = {'x', 'y', 's1', 's2'};
+
+n = size(A,2);
+m = size(A,1);
+
+% All combinations of basic variables
+comb = nchoosek(1:n, m);
+
+disp('Basic Feasible Solutions:');
+disp('-------------------------');
+
+for i = 1:size(comb,1)
+    B = A(:, comb(i,:));      % Basis matrix
+    
+    if det(B) ~= 0
+        xB = B\b;
+        sol = zeros(n,1);
+        sol(comb(i,:)) = xB;
+        
+        if all(sol >= 0)
+            fprintf('%s = %.2f, %s = %.2f, %s = %.2f, %s = %.2f\n', ...
+                vars{1}, sol(1), vars{2}, sol(2), ...
+                vars{3}, sol(3), vars{4}, sol(4));
+        end
+    end
+end
