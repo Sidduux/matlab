@@ -1,0 +1,52 @@
+clc;
+clear;
+close all;
+
+% Define x range
+x = 0:0.01:5;
+
+% Constraint equations
+y1 = 4 - x;          % x + y = 4
+y2 = (6 - x)/3;      % x + 3y = 6
+
+% Plot constraints
+plot(x, y1, 'r', 'LineWidth', 2);
+hold on;
+plot(x, y2, 'b', 'LineWidth', 2);
+
+% Non-negativity constraints
+xlim([0 5]);
+ylim([0 5]);
+
+% Feasible region
+y_feasible = min(y1, y2);
+y_feasible(y_feasible < 0) = 0;
+fill([x fliplr(x)], [y_feasible zeros(size(y_feasible))], ...
+     'g', 'FaceAlpha', 0.3);
+
+% Labels
+xlabel('x');
+ylabel('y');
+legend('x + y = 4', 'x + 3y = 6', 'Feasible Region');
+title('Graphical Method for LPP');
+grid on;
+
+% Corner points
+points = [0 0; 0 2; 3 1; 4 0];
+
+% Objective function Z = 3x + 2y
+Z = 3*points(:,1) + 2*points(:,2);
+
+% Display results
+disp('Corner Points (x , y):');
+disp(points);
+disp('Objective Function Values:');
+disp(Z);
+
+% Optimal solution
+[maxZ, index] = max(Z);
+optimal_point = points(index,:);
+
+fprintf('Optimal Solution: x = %.2f, y = %.2f\n', ...
+        optimal_point(1), optimal_point(2));
+fprintf('Maximum Z = %.2f\n', maxZ);
